@@ -1,0 +1,40 @@
+# The main job for FinanceUC.
+resources:
+  jobs:
+    FinanceUC_job:
+      name: FinanceUC_job
+
+      trigger:
+        # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
+        periodic:
+          interval: 1
+          unit: DAYS
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: notebook_task
+          notebook_task:
+            notebook_path: ../src/FinanceUC/Bronze/RetailTransformation.ipynb
+
+        #- task_key: notebook_task
+        #  notebook_task:
+        #    notebook_path: ../src/FinanceUC/Silver/RetailInvoice.ipynb  
+      
+
+        - task_key: main_task
+          depends_on:
+            - task_key: notebook_task
+
+          environment_key: default
+          python_wheel_task:
+            package_name: FinanceUC
+            entry_point: main
+
+      # A list of task execution environment specifications that can be referenced by tasks of this job.
+      environments:
+        - environment_key: default
+
+  

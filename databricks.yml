@@ -1,0 +1,22 @@
+bundle:
+  name: FinanceUC
+  uuid: 47259862-e81c-4533-b9f0-f912c42e18ac
+
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-2914d1b9-4650.cloud.databricks.com
+      root_path: /Workspace/Users/mansseti1988@gmail.com/.bundle/${bundle.name}/${bundle.target}
+    sync:
+      paths:
+        - src/FinanceUC
+        
+
+
